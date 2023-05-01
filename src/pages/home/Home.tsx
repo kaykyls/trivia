@@ -20,11 +20,15 @@ const Home: React.FC = () => {
 
     getCategories().then(data => setCategories(data.trivia_categories))
 
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault()
+    }
+
   return (
     <div className="menu-container">
         <div className="menu-wrapper">
         <h1>Trivia</h1>
-            <form className="menu-options">
+            <form onSubmit={handleSubmit} className="menu-options">
                 <label htmlFor="categories">Category</label>
                 <select name="categories" id="categories">
                     {categories.map((category: Category, index: number) => <option key={index} value={category["id"]}>{category["name"]}</option>)}
