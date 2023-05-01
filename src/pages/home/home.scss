@@ -1,0 +1,49 @@
+@use "../../scss/variables";
+
+.menu-container{
+    display: flex;
+    height: 100vh;
+    align-items: center;
+    justify-content: center;
+    background: url(https://images.unsplash.com/photo-1589340786333-5399b1446fe0?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1074&q=80);
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.menu-wrapper {
+    padding: 3rem;
+    border-radius: 2rem;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    background: #fff;
+}   
+
+.menu, .menu-options {
+    display: flex;
+    flex-direction: column;
+}
+
+.menu-options {
+    select, input, .play-btn {
+        border-radius: 1rem;
+        padding: .5rem;
+        font-size: 1rem;
+        border: 1px solid #000;
+        margin-bottom: 1rem;
+    }
+
+    label {
+        margin-bottom: .3rem;
+    }
+
+    .play-btn {
+        margin-top: 1rem;
+        cursor: pointer;
+        transition: all .2s ease-in-out;
+        background: variables.$primary-color;
+        color: variables.$secondary-text-color;
+
+        &:hover {
+            background: variables.$dark-primary-color;
+        }
+    }
+}
