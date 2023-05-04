@@ -1,4 +1,8 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { setQuestions } from '../../redux/questionsSlice';
+import { increment } from '../../redux/scoreSlice';
 import './home.scss'
 
 interface Category {
@@ -7,10 +11,14 @@ interface Category {
 }
 
 const Home: React.FC = () => {
-    console.log("Home")
-
     const [categories, setCategories] = useState<Category[]>([])
     const [valueInput, setValueInput] = useState<number>(10)
+    const [categoryId, setCategoryId] = useState<number>(0)
+
+    const score = useSelector((state: any) => state.score.value)
+    const navigate = useNavigate()
+
+    const dispatch = useDispatch()
 
     async function getCategories() {
         let res = await fetch("https://opentdb.com/api_category.php")
@@ -18,10 +26,30 @@ const Home: React.FC = () => {
         return data
     }
 
-    getCategories().then(data => setCategories(data.trivia_categories))
+    async function getQuestions() {
+        let res = await fetch(`https://opentdb.com/api.php?amount=${valueInput}`)
+        let data = await res.json()
+        return data.results
+    }
+
+    useEffect(() => {
+        getCategories().then(data => setCategories(data.trivia_categories))
+    }, [])
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
+    }
+
+    const handleTeste = () => {
+        dispatch(increment(10))
+    }
+
+    const handlePlay = async () => {
+        const data = await getQuestions()
+
+        dispatch(setQuestions(data))
+
+        navigate('/game')
     }
 
   return (
@@ -30,7 +58,7 @@ const Home: React.FC = () => {
         <h1>Trivia</h1>
             <form onSubmit={handleSubmit} className="menu-options">
                 <label htmlFor="categories">Category</label>
-                <select name="categories" id="categories">
+                <select value={categoryId} onChange={(e) => setCategoryId(Number(e.target.value))} name="categories" id="categories">
                     {categories.map((category: Category, index: number) => <option key={index} value={category["id"]}>{category["name"]}</option>)}
                 </select>
 
@@ -50,8 +78,11 @@ const Home: React.FC = () => {
                 <label htmlFor="amount">Amount</label>
                 <input onChange={(e) => setValueInput(Number(e.target.value))} type="number" name="amount" id="amount" min="1" max="50" value={valueInput}/>
 
-                <button className='play-btn'>Play</button>
+                <button onClick={handlePlay} className='play-btn'>Play</button>
             </form>
+
+            <button onClick={handleTeste}>TESTE</button>
+            <h1>{score}</h1>
         </div>   
     </div>
   )

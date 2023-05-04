@@ -1,0 +1,10 @@
+// @use "../../scss/variables";
+@use "../../scss/mixins";
+
+.game-container {
+    @include mixins.background();
+}
+
+.game-wrapper {
+    @include mixins.wrapper();
+}
