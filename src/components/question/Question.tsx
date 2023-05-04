@@ -1,31 +1,25 @@
-import React from 'react'
+import React, { useState } from 'react'
 import './question.scss'
 
 const Question = (props: any) => {
-    const shuffle = (array: []) => {
-        for (let i = array.length - 1; i > 0; i--) {
-          const j = Math.floor(Math.random() * (i + 1));
-          [array[i], array[j]] = [array[j], array[i]];
-        }
-        return array;
+    const handleSelectAnswer = (index: number) => {
+        props.setSelectedAnswer(index)
     }
-
-    const answers = [...shuffle(props.answers)]
 
     return (
         <div className='question'>
             <div className="alternatives">
-                <div className="alternative">
-                    <span className='alternative-text'>{"A)"} {answers[0]}</span>
+                <div onClick={() => handleSelectAnswer(0)} className={props.selectedAnswer === 0 ? "alternative is-selected" : "alternative"}>
+                    <span className='alternative-text'>{"A)"} {props.answers[0]}</span>
                 </div>
-                <div className="alternative">
-                    <span className='alternative-text'>{"B)"} {answers[1]}</span>
+                <div onClick={() => handleSelectAnswer(1)} className={props.selectedAnswer === 1 ? "alternative is-selected" : "alternative"}>
+                    <span className='alternative-text'>{"B)"} {props.answers[1]}</span>
                 </div>
-                <div className="alternative">
-                    <span className='alternative-text'>{"C)"} {answers[2]}</span>
+                <div onClick={() => handleSelectAnswer(2)} className={props.selectedAnswer === 2 ? "alternative is-selected" : "alternative"}>
+                    <span className='alternative-text'>{"C)"} {props.answers[2]}</span>
                 </div>
-                <div className="alternative">
-                    <span className='alternative-text'>{"D)"} {answers[3]}</span>
+                <div onClick={() => handleSelectAnswer(3)} className={props.selectedAnswer === 3 ? "alternative is-selected" : "alternative"}>
+                    <span className='alternative-text'>{"D)"} {props.answers[3]}</span>
                 </div>
             </div>
         </div>

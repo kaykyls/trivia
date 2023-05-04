@@ -1,3 +1,5 @@
+@use "../../scss/variables.scss";
+
 .question {
     display: flex;
     flex-direction: column;
@@ -23,4 +25,12 @@
 .question-text {
     font-size: 1.2rem;
     // max-width: 35ch;
+}
+
+.is-selected {
+    background: variables.$primary-color;
+    outline: 2px solid #000;
+    &:hover {
+        background: variables.$dark-primary-color;
+    }
 }
