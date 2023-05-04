@@ -3,7 +3,8 @@ import { createSlice } from "@reduxjs/toolkit";
 const questionsSlice = createSlice({
   name: "questions",
   initialState: {
-    questions: []
+    questions: [],
+    currentQuestion: 0
   },
   reducers: {
     setQuestions: (state, { payload }) => {
@@ -12,10 +13,14 @@ const questionsSlice = createSlice({
 
     resetQuestions: (state) => {
         state.questions = [];
+    },
+
+    updateQuestion: (state) => {
+        state.currentQuestion += 1;
     }
   },
 });
 
-export const { setQuestions, resetQuestions } = questionsSlice.actions;
+export const { setQuestions, resetQuestions, updateQuestion } = questionsSlice.actions;
 
 export default questionsSlice.reducer;

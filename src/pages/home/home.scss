@@ -31,13 +31,6 @@
 
     .play-btn {
         margin-top: 1rem;
-        cursor: pointer;
-        transition: all .2s ease-in-out;
-        background: variables.$primary-color;
-        color: variables.$main-text-color;
-
-        &:hover {
-            background: variables.$dark-primary-color;
-        }
+        @include mixins.button();
     }
 }
