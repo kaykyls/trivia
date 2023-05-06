@@ -1,11 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit'
 import scoreReducer from './scoreSlice'
 import questionsReducer from './questionsSlice'
+import answerReducer from './answerSlice'
 
 const store = configureStore({
   reducer: {
     score: scoreReducer,
-    questions: questionsReducer
+    questions: questionsReducer,
+    answer: answerReducer
   },
 })
 

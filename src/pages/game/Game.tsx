@@ -1,43 +1,38 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import './game.scss'
 import Question from '../../components/question/Question';
 import { updateQuestion } from '../../redux/questionsSlice';
 import { increment } from '../../redux/scoreSlice';
+import { setIsCorrect } from '../../redux/answerSlice';
 
 const Game = () => {
     const questions = useSelector((state: any) => state.questions.questions)
     const currentQuestion = useSelector((state: any) => state.questions.currentQuestion)
+    const playerAnswer = useSelector((state: any) => state.answer.playerAnswer)
+    const score = useSelector((state: any) => state.score.value)
+    const selectedAnswer = useSelector((state: any) => state.answer.selectedAnswer)
+    const isCorrect = useSelector((state: any) => state.answer.isCorrect)
+
     const dispatch = useDispatch()
 
-    const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null)
-    const [playerAnswer, setPlayerAnswer] = useState<string>("")
-    const [isCorrect, setIsCorrect] = useState<boolean | null>(null)
-    const score = useSelector((state: any) => state.score.value)
-    
-    console.log(questions)
-
-    const handleUpdateQuestion = () => {
-        handleCheckAnswer()
-
-        // setIsCorrect(null)
-
-        // dispatch(updateQuestion())
+    const handleUpdateQuestion = () => {    
+        if (currentQuestion === 9) {
+            return
+        }
+        dispatch(updateQuestion())
     }
 
     const handleCheckAnswer = () => {
-        if (selectedAnswer === null) {
+        if (playerAnswer === null) {
             return
         }
 
-        setSelectedAnswer(null)
-
         if(questions[currentQuestion].correct_answer === playerAnswer) {
-            setIsCorrect(true)
-
+            dispatch(setIsCorrect(true))
             dispatch(increment(10))
         } else {
-            setIsCorrect(false)
+            dispatch(setIsCorrect(false))
         }
     }
 
@@ -55,11 +50,12 @@ const Game = () => {
                     </div>
                     <span className='question-text'>{questions[currentQuestion].question}</span>
                 </div>
-                
-                <Question isCorrect={isCorrect} setPlayerAnswer={setPlayerAnswer} question={questions[currentQuestion]} setSelectedAnswer={setSelectedAnswer} selectedAnswer={selectedAnswer}/>
-                <button className='next-btn' onClick={handleUpdateQuestion}>
-                    Next
-                </button>
+
+                <Question isCorrect={isCorrect} question={questions[currentQuestion]}/>
+
+                <button className={selectedAnswer !== null ? 'next-btn' : "next-btn not-selected"} onClick={isCorrect === null ? handleCheckAnswer : handleUpdateQuestion}>
+                    {isCorrect !== null ? "Next" : "Confirm"}
+                </button>  
             </div>
         </div>
     )

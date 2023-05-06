@@ -1,15 +1,33 @@
-import React, { useEffect, useState } from 'react'
-import './question.scss'
-import { useSelector } from 'react-redux';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  setCorrectAnswer,
+  setPlayerAnswer,
+  setSelectedAnswer,
+  setIsCorrect
+} from '../../redux/answerSlice';
+import './question.scss';
 
 
 const Question = (props: any) => {
+    const {
+        playerAnswer,
+        selectedAnswer,
+        isCorrect,
+        correctAnswer
+    } = useSelector((state: any) => state.answer);
+
     const [answers, setAnswers] = useState<string[]>([])
 
-    const handleSelectAnswer = (index: number) => {
-        props.setSelectedAnswer(index)
+    const dispatch = useDispatch()
 
-        props.setPlayerAnswer(answers[index])
+    const handleSelectAnswer = (index: number) => {
+        if (isCorrect !== null) {
+            return
+        }
+
+        dispatch(setSelectedAnswer(index))
+        dispatch(setPlayerAnswer(answers[index]))
     }
 
     const shuffle = (array: any[]) => {
@@ -22,24 +40,35 @@ const Question = (props: any) => {
 
     useEffect(() => {
         setAnswers(shuffle([props.question.correct_answer, ...props.question.incorrect_answers]))  
+
+        dispatch(setPlayerAnswer(null))
+        dispatch(setIsCorrect(null))
+        dispatch(setCorrectAnswer(props.question.correct_answer))
+        dispatch(setSelectedAnswer(null))
     }, [props.question])
 
     const changleClassName = (index: number) => {
-        let name = "alternative"
-
-        if (props.selectedAnswer === index) {
-            name += " is-selected"
+        if(isCorrect === false && playerAnswer === answers[index]) {
+            return "alternative is-wrong"
         }
 
-        console.log(props.isCorrect)
-
-        if(props.isCorrect !== null && props.question.correct_answer === answers[index]) {
-            name += " is-correct"
-        } else if(props.isCorrect === false && props.selectedAnswer === index) {
-            name += " is-wrong"
+        if(isCorrect && playerAnswer === answers[index]) {
+            return "alternative is-correct"
         }
 
-        return name
+        if(isCorrect === false && answers[index] === correctAnswer) {
+            return "alternative is-correct"
+        }
+
+        if (selectedAnswer === index) {
+            return "alternative is-selected"
+        }
+
+        if (isCorrect !== null && answers[index] !== correctAnswer && answers[index] !== playerAnswer) {
+            return "alternative is-confirmed"
+        }
+
+        return "alternative"
     }
 
     return (

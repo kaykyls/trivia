@@ -36,6 +36,8 @@
 }
 
 .is-correct {
+    outline: 2px solid #000;
+    cursor: default;
     background: #95ea90;
     &:hover {
         background: #95ea90;
@@ -43,8 +45,17 @@
 }
 
 .is-wrong {
+    outline: 2px solid #000;
+    cursor: default;
     background: #ea9595;
     &:hover {
         background: #ea9595;
+    }
+}
+
+.is-confirmed {
+    cursor: default !important;
+    &:hover {
+        background: #fff;
     }
 }
