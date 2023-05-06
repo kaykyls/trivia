@@ -34,3 +34,17 @@
         background: variables.$dark-primary-color;
     }
 }
+
+.is-correct {
+    background: #95ea90;
+    &:hover {
+        background: #95ea90;
+    }
+}
+
+.is-wrong {
+    background: #ea9595;
+    &:hover {
+        background: #ea9595;
+    }
+}

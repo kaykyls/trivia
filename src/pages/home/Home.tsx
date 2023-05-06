@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { setQuestions } from '../../redux/questionsSlice';
-import { increment } from '../../redux/scoreSlice';
 import './home.scss'
 
 interface Category {
@@ -15,7 +14,6 @@ const Home: React.FC = () => {
     const [valueInput, setValueInput] = useState<number>(10)
     const [categoryId, setCategoryId] = useState<number>(0)
 
-    const score = useSelector((state: any) => state.score.value)
     const navigate = useNavigate()
 
     const dispatch = useDispatch()
@@ -38,10 +36,6 @@ const Home: React.FC = () => {
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
-    }
-
-    const handleTeste = () => {
-        dispatch(increment(10))
     }
 
     const handlePlay = async () => {
@@ -80,9 +74,6 @@ const Home: React.FC = () => {
 
                 <button onClick={handlePlay} className='play-btn'>Play</button>
             </form>
-
-            <button onClick={handleTeste}>TESTE</button>
-            <h1>{score}</h1>
         </div>   
     </div>
   )
