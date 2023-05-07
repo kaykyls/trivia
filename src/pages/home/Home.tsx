@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { setQuestions } from '../../redux/questionsSlice';
+import { setQuestions, updateCategoryId } from '../../redux/questionsSlice';
 import './home.scss'
 
 interface Category {
@@ -13,6 +13,8 @@ const Home: React.FC = () => {
     const [categories, setCategories] = useState<Category[]>([])
     const [valueInput, setValueInput] = useState<number>(10)
     const [categoryId, setCategoryId] = useState<number>(0)
+    const [difficulty, setDifficulty] = useState<string>("easy")
+    const [type, setType] = useState<string>("multiple")
 
     const navigate = useNavigate()
 
@@ -24,8 +26,8 @@ const Home: React.FC = () => {
         return data
     }
 
-    async function getQuestions() {
-        let res = await fetch(`https://opentdb.com/api.php?amount=${valueInput}`)
+    async function getQuestions(url: string) {
+        let res = await fetch(url)
         let data = await res.json()
         return data.results
     }
@@ -39,9 +41,23 @@ const Home: React.FC = () => {
     }
 
     const handlePlay = async () => {
-        const data = await getQuestions()
+        let url = `https://opentdb.com/api.php?amount=${valueInput}`
+
+        if(categoryId !== 0) {
+            url += `&category=${categoryId}`
+        }
+
+        url += `&difficulty=${difficulty}`
+
+        url += `&type=multiple`
+
+        console.log(url)
+
+        const data = await getQuestions(url)
 
         dispatch(setQuestions(data))
+
+        dispatch(updateCategoryId(categoryId))
 
         navigate('/game')
     }
@@ -57,17 +73,17 @@ const Home: React.FC = () => {
                 </select>
 
                 <label htmlFor="difficulty">Difficulty</label>
-                <select name="difficulty" id="difficulty">
+                <select value={difficulty} onChange={(e) =>setDifficulty(e.target.value)} name="difficulty" id="difficulty">
                     <option value="easy">Easy</option>
                     <option value="medium">Medium</option>
                     <option value="hard">Hard</option>
                 </select>
 
-                <label htmlFor="type">Type</label>
-                <select name="type" id="type">
+                {/* <label htmlFor="type">Type</label>
+                <select value={type} onChange={(e) => setType(e.target.value)} name="type" id="type">
                     <option value="multiple">Multiple Choice</option>
                     <option value="boolean">True / False</option>
-                </select>
+                </select> */}
 
                 <label htmlFor="amount">Amount</label>
                 <input onChange={(e) => setValueInput(Number(e.target.value))} type="number" name="amount" id="amount" min="1" max="50" value={valueInput}/>

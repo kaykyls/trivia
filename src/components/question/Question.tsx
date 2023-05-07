@@ -7,7 +7,7 @@ import {
   setIsCorrect
 } from '../../redux/answerSlice';
 import './question.scss';
-
+import he from 'he';
 
 const Question = (props: any) => {
     const {
@@ -18,6 +18,7 @@ const Question = (props: any) => {
     } = useSelector((state: any) => state.answer);
 
     const [answers, setAnswers] = useState<string[]>([])
+    const [decodedAnswers, setDecodedAnswers] = useState<string[]>([])
 
     const dispatch = useDispatch()
 
@@ -46,6 +47,12 @@ const Question = (props: any) => {
         dispatch(setCorrectAnswer(props.question.correct_answer))
         dispatch(setSelectedAnswer(null))
     }, [props.question])
+
+    useEffect(() => {
+        const decodedAnswers = answers.map((answer: string) => he.decode(answer));
+        setDecodedAnswers(decodedAnswers);
+      }, [answers]);
+      
 
     const changleClassName = (index: number) => {
         if(isCorrect === false && playerAnswer === answers[index]) {

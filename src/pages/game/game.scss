@@ -30,6 +30,15 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    h1 {
+        font-size: 1.5rem;
+    }
+}
+
+.game-info {
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
 }
 
 .not-selected {
@@ -44,4 +53,9 @@
     &:hover {
         background: #ffffff70;
     }
+}
+
+.score {
+    display: flex;
+    justify-content: space-between;
 }
