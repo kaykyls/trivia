@@ -82,16 +82,16 @@ const Question = (props: any) => {
         <div className='question'>
             <div className="alternatives">
                 <div onClick={() => handleSelectAnswer(0)} className={changleClassName(0)}>
-                    <span className='alternative-text'>{"A)"} {answers[0]}</span>
+                    <span className='alternative-text'>{"A)"} {decodedAnswers[0]}</span>
                 </div>
                 <div onClick={() => handleSelectAnswer(1)} className={changleClassName(1)}>
-                    <span className='alternative-text'>{"B)"} {answers[1]}</span>
+                    <span className='alternative-text'>{"B)"} {decodedAnswers[1]}</span>
                 </div>
                 <div onClick={() => handleSelectAnswer(2)} className={changleClassName(2)}>
-                    <span className='alternative-text'>{"C)"} {answers[2]}</span>
+                    <span className='alternative-text'>{"C)"} {decodedAnswers[2]}</span>
                 </div>
                 <div onClick={() => handleSelectAnswer(3)} className={changleClassName(3)}>
-                    <span className='alternative-text'>{"D)"} {answers[3]}</span>
+                    <span className='alternative-text'>{"D)"} {decodedAnswers[3]}</span>
                 </div>
             </div>
         </div>
