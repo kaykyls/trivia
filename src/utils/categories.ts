@@ -1,4 +1,9 @@
-export const categories = [
+export interface Category {
+    id: number;
+    name: string;
+  }
+  
+export const categories: Category[] = [
     { id: 9, name: 'General Knowledge' },
     { id: 10, name: 'Entertainment: Books' },
     { id: 11, name: 'Entertainment: Film' },
@@ -23,4 +28,4 @@ export const categories = [
     { id: 30, name: 'Science: Gadgets' },
     { id: 31, name: 'Entertainment: Japanese Anime & Manga' },
     { id: 32, name: 'Entertainment: Cartoon & Animations' }
-]  
+]

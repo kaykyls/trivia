@@ -12,7 +12,7 @@ const ErrorModal: React.FC<ErrorModalProps> = ({ setError }) => {
 
     return (
         <div className='error-modal-container'>
-            <div className='error-modal-wrapper'>
+            <div className='error-modal-wrapper mfp-zoom-in'>
                 <h1>There are not enough questions for your query</h1>
                 <button onClick={handleOkClick} className='error-modal-btn'>Ok</button>
             </div>
