@@ -4,6 +4,7 @@ export interface Category {
   }
   
 export const categories: Category[] = [
+    { id: 0, name: 'Any Category' },
     { id: 9, name: 'General Knowledge' },
     { id: 10, name: 'Entertainment: Books' },
     { id: 11, name: 'Entertainment: Film' },
