@@ -1,8 +1,11 @@
-import React, { useState, useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useState } from 'react'
+import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { setQuestions, updateCategoryId } from '../../redux/questionsSlice';
 import './home.scss'
+import { categories } from '../../utils/categories';
+import ErrorModal from '../../components/errorModal/ErrorModal';
+import Loader from '../../components/loader/Loader';
 
 interface Category {
   id: number;
@@ -10,37 +13,29 @@ interface Category {
 }
 
 const Home: React.FC = () => {
-    const [categories, setCategories] = useState<Category[]>([])
     const [valueInput, setValueInput] = useState<number>(10)
     const [categoryId, setCategoryId] = useState<number>(0)
     const [difficulty, setDifficulty] = useState<string>("easy")
     const [type, setType] = useState<string>("multiple")
+    const [error, setError] = useState<boolean>(false)
+    const [loader, setLoader] = useState<boolean>(false)
 
     const navigate = useNavigate()
 
     const dispatch = useDispatch()
 
-    async function getCategories() {
-        let res = await fetch("https://opentdb.com/api_category.php")
-        let data = await res.json()
-        return data
-    }
-
     async function getQuestions(url: string) {
         let res = await fetch(url)
         let data = await res.json()
-        return data.results
+        return data
     }
-
-    useEffect(() => {
-        getCategories().then(data => setCategories(data.trivia_categories))
-    }, [])
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
     }
 
     const handlePlay = async () => {
+        setLoader(true)
         let url = `https://opentdb.com/api.php?amount=${valueInput}`
 
         if(categoryId !== 0) {
@@ -48,16 +43,19 @@ const Home: React.FC = () => {
         }
 
         url += `&difficulty=${difficulty}`
-
-        url += `&type=multiple`
-
-        console.log(url)
+        url += `&type=${type}`
 
         const data = await getQuestions(url)
 
-        dispatch(setQuestions(data))
+        if (data.response_code === 1) {
+            setLoader(false)
+            setError(true)
+            return
+        }
 
+        dispatch(setQuestions(data.results))
         dispatch(updateCategoryId(categoryId))
+        setLoader(false)
 
         navigate('/game')
     }
@@ -79,18 +77,20 @@ const Home: React.FC = () => {
                     <option value="hard">Hard</option>
                 </select>
 
-                {/* <label htmlFor="type">Type</label>
+                <label htmlFor="type">Type</label>
                 <select value={type} onChange={(e) => setType(e.target.value)} name="type" id="type">
                     <option value="multiple">Multiple Choice</option>
                     <option value="boolean">True / False</option>
-                </select> */}
+                </select>
 
                 <label htmlFor="amount">Amount</label>
                 <input onChange={(e) => setValueInput(Number(e.target.value))} type="number" name="amount" id="amount" min="1" max="50" value={valueInput}/>
 
                 <button onClick={handlePlay} className='play-btn'>Play</button>
             </form>
-        </div>   
+        </div>
+        {loader && <Loader/>}
+        {error && <ErrorModal setError={setError}/>}
     </div>
   )
 }

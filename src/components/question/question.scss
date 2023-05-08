@@ -39,6 +39,7 @@
     outline: 2px solid #000;
     cursor: default;
     background: #95ea90;
+    transition: .1s;
     &:hover {
         background: #95ea90;
     }
@@ -48,6 +49,7 @@
     outline: 2px solid #000;
     cursor: default;
     background: #ea9595;
+    transition: .1s;
     &:hover {
         background: #ea9595;
     }

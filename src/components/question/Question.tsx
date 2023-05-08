@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, Fragment } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   setCorrectAnswer,
@@ -9,7 +9,18 @@ import {
 import './question.scss';
 import he from 'he';
 
-const Question = (props: any) => {
+interface QuestionProps {
+    question: {
+      category: string;
+      correct_answer: string;
+      difficulty: string;
+      incorrect_answers: string[];
+      question: string;
+      type: string;
+    }
+}
+
+const Question = ({ question }: QuestionProps) => {
     const {
         playerAnswer,
         selectedAnswer,
@@ -40,13 +51,13 @@ const Question = (props: any) => {
     }
 
     useEffect(() => {
-        setAnswers(shuffle([props.question.correct_answer, ...props.question.incorrect_answers]))  
+        setAnswers(shuffle([question.correct_answer, ...question.incorrect_answers]))  
 
         dispatch(setPlayerAnswer(null))
         dispatch(setIsCorrect(null))
-        dispatch(setCorrectAnswer(props.question.correct_answer))
+        dispatch(setCorrectAnswer(question.correct_answer))
         dispatch(setSelectedAnswer(null))
-    }, [props.question])
+    }, [question])
 
     useEffect(() => {
         const decodedAnswers = answers.map((answer: string) => he.decode(answer));
@@ -87,12 +98,17 @@ const Question = (props: any) => {
                 <div onClick={() => handleSelectAnswer(1)} className={changleClassName(1)}>
                     <span className='alternative-text'>{"B)"} {decodedAnswers[1]}</span>
                 </div>
-                <div onClick={() => handleSelectAnswer(2)} className={changleClassName(2)}>
+                {question.type === "multiple" &&
+                <Fragment>
+                    <div onClick={() => handleSelectAnswer(2)} className={changleClassName(2)}>
                     <span className='alternative-text'>{"C)"} {decodedAnswers[2]}</span>
-                </div>
-                <div onClick={() => handleSelectAnswer(3)} className={changleClassName(3)}>
-                    <span className='alternative-text'>{"D)"} {decodedAnswers[3]}</span>
-                </div>
+                    </div>
+                    <div onClick={() => handleSelectAnswer(3)} className={changleClassName(3)}>
+                        <span className='alternative-text'>{"D)"} {decodedAnswers[3]}</span>
+                    </div>
+                </Fragment>
+                }
+                
             </div>
         </div>
     )

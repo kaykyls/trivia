@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import './game.scss'
 import Question from '../../components/question/Question';
@@ -7,7 +7,7 @@ import { increment } from '../../redux/scoreSlice';
 import { setIsCorrect } from '../../redux/answerSlice';
 import he from 'he';
 
-const Game = () => {
+const Game: React.FC = () => {
     const questions = useSelector((state: any) => state.questions.questions)
     const currentQuestion = useSelector((state: any) => state.questions.currentQuestion)
     const playerAnswer = useSelector((state: any) => state.answer.playerAnswer)
@@ -18,7 +18,7 @@ const Game = () => {
     const dispatch = useDispatch()
 
     const handleUpdateQuestion = () => {    
-        if (currentQuestion === 9) {
+        if (currentQuestion === questions.length - 1) {
             return
         }
         dispatch(updateQuestion())
@@ -42,20 +42,17 @@ const Game = () => {
             <div className='game-wrapper'>
                 <div className='game-info'>
                     <div className="score">
-                        <span className="difficulty-text">
-                            Difficulty: {questions[currentQuestion].difficulty}
-                        </span>
+                        <span className="difficulty-text">Difficulty: {questions[currentQuestion].difficulty}</span>
                         <span className='score-text'>Score: {score}</span>
                     </div>
                     <div className='quiz-info'>
-                        {/* botar categoria no lugar de quiz */}
                         <h1>{questions[currentQuestion].category}</h1>
-                        <span className='question-number'>{currentQuestion + 1}/10</span>
+                        <span className='question-number'>{currentQuestion + 1}/{questions.length}</span>
                     </div>
                     <span className='question-text'>{he.decode(questions[currentQuestion].question)}</span>
                 </div>
 
-                <Question isCorrect={isCorrect} question={questions[currentQuestion]}/>
+                <Question question={questions[currentQuestion]}/>
 
                 <button className={selectedAnswer !== null ? 'next-btn' : "next-btn not-selected"} onClick={isCorrect === null ? handleCheckAnswer : handleUpdateQuestion}>
                     {isCorrect !== null ? "Next" : "Confirm"}
