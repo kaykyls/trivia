@@ -6,6 +6,8 @@ import './home.scss'
 import { categories } from '../../utils/categories';
 import ErrorModal from '../../components/errorModal/ErrorModal';
 import Loader from '../../components/loader/Loader';
+import { reset } from '../../redux/scoreSlice';
+import { resetAnswer } from '../../redux/answerSlice';
 
 interface Category {
   id: number;
@@ -34,7 +36,21 @@ const Home: React.FC = () => {
         e.preventDefault()
     }
 
+    const resetGame = () => {
+        setCategoryId(0)
+        setDifficulty("easy")
+        setType("multiple")
+        setValueInput(10)
+
+        dispatch(setQuestions([]))
+        dispatch(updateCategoryId(0))
+        dispatch(reset())
+        dispatch(resetAnswer())
+    }
+
     const handlePlay = async () => {
+        resetGame()
+
         setLoader(true)
         let url = `https://opentdb.com/api.php?amount=${valueInput}`
 

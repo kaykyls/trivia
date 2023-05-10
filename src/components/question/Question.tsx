@@ -60,6 +60,10 @@ const Question = ({ question }: QuestionProps) => {
     }, [question])
 
     useEffect(() => {
+        if (answers.length === 0) {
+          return;
+        }
+
         const decodedAnswers = answers.map((answer: string) => he.decode(answer));
         setDecodedAnswers(decodedAnswers);
       }, [answers]);

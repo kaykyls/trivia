@@ -26,6 +26,7 @@ const answerSlice = createSlice({
     },
 
     resetAnswer: (state) => {
+        state.selectedAnswer = null;
         state.playerAnswer = "";
         state.correctAnswer = "";
         state.isCorrect = false;

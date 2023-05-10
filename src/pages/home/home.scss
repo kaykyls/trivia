@@ -3,34 +3,31 @@
 
 .menu-container{
     @include mixins.background();
-}
 
-.menu-wrapper {
-    @include mixins.wrapper(#ffffff99);
-}   
+    .menu-wrapper {
+        @include mixins.wrapper(#ffffff99);
 
-.menu, .menu-options {
-    display: flex;
-    flex-direction: column;
-}
+        .menu-options {
+            display: flex;
+            flex-direction: column;
 
-.menu-options {
-
-    select, input, .play-btn {
-        border-radius: 1rem;
-        padding: .5rem 1rem;
-        font-size: 1.2rem;
-        border: none;
-        margin-bottom: 1rem;
-    }
-
-    label {
-        margin-bottom: .3rem;
-        font-size: 1.2rem;
-    }
-
-    .play-btn {
-        margin-top: 1rem;
-        @include mixins.button();
-    }
+            select, input, .play-btn {
+                border-radius: 1rem;
+                padding: .5rem 1rem;
+                font-size: 1.2rem;
+                border: none;
+                margin-bottom: 1rem;
+            }
+        
+            label {
+                margin-bottom: .3rem;
+                font-size: 1.2rem;
+            }
+        
+            .play-btn {
+                margin-top: 1rem;
+                @include mixins.button();
+            }
+        }
+    }  
 }
