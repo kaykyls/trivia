@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import './game.scss'
 import Question from '../../components/question/Question';
@@ -11,14 +11,24 @@ import he from 'he';
 const Game: React.FC = () => {
     const questions = useSelector((state: any) => state.questions.questions)
     const currentQuestion = useSelector((state: any) => state.questions.currentQuestion)
-    const playerAnswer = useSelector((state: any) => state.answer.playerAnswer)
     const score = useSelector((state: any) => state.score.value)
     const selectedAnswer = useSelector((state: any) => state.answer.selectedAnswer)
     const isCorrect = useSelector((state: any) => state.answer.isCorrect)
-
+    const correctAnswer = useSelector((state: any) => state.answer.correctAnswer)
+    const isPlaying = useSelector((state: any) => state.game.isPlaying)
+    
     const dispatch = useDispatch()
 
     const navigate = useNavigate()
+
+    // console.log(isPlaying)
+
+    // useEffect(() => {
+    //     if(!isPlaying) {
+    //         navigate('/')
+    //     }
+    // }, [isPlaying, navigate])
+
 
     const handleUpdateQuestion = () => {    
         if (currentQuestion === questions.length - 1) {
@@ -28,11 +38,11 @@ const Game: React.FC = () => {
     }
 
     const handleCheckAnswer = () => {
-        if (playerAnswer === null) {
+        if(selectedAnswer === null) {
             return
         }
 
-        if(questions[currentQuestion].correct_answer === playerAnswer) {
+        if(selectedAnswer === correctAnswer) {
             dispatch(setIsCorrect(true))
             dispatch(increment(10))
         } else {

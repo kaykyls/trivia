@@ -2,7 +2,6 @@ import React, { useEffect, useState, Fragment } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   setCorrectAnswer,
-  setPlayerAnswer,
   setSelectedAnswer,
   setIsCorrect
 } from '../../redux/answerSlice';
@@ -22,7 +21,6 @@ interface QuestionProps {
 
 const Question = ({ question }: QuestionProps) => {
     const {
-        playerAnswer,
         selectedAnswer,
         isCorrect,
         correctAnswer
@@ -39,7 +37,6 @@ const Question = ({ question }: QuestionProps) => {
         }
 
         dispatch(setSelectedAnswer(index))
-        dispatch(setPlayerAnswer(answers[index]))
     }
 
     const shuffle = (array: any[]) => {
@@ -51,12 +48,19 @@ const Question = ({ question }: QuestionProps) => {
     }
 
     useEffect(() => {
-        setAnswers(shuffle([question.correct_answer, ...question.incorrect_answers]))  
-
-        dispatch(setPlayerAnswer(null))
         dispatch(setIsCorrect(null))
-        dispatch(setCorrectAnswer(question.correct_answer))
         dispatch(setSelectedAnswer(null))
+        dispatch(setCorrectAnswer(null))
+
+        let checkAnswers = shuffle([question.correct_answer, ...question.incorrect_answers])
+
+        for(let i = 0; i < checkAnswers.length; i++) {
+            if(checkAnswers[i] === question.correct_answer) {
+                dispatch(setCorrectAnswer(i))
+            }
+        }
+
+        setAnswers(checkAnswers)       
     }, [question])
 
     useEffect(() => {
@@ -70,15 +74,15 @@ const Question = ({ question }: QuestionProps) => {
       
 
     const changleClassName = (index: number) => {
-        if(isCorrect === false && playerAnswer === answers[index]) {
+        if(isCorrect === false && selectedAnswer === index) {
             return "alternative is-wrong"
         }
 
-        if(isCorrect && playerAnswer === answers[index]) {
+        if(isCorrect && selectedAnswer === index) {
             return "alternative is-correct"
         }
 
-        if(isCorrect === false && answers[index] === correctAnswer) {
+        if(isCorrect === false && index === correctAnswer) {
             return "alternative is-correct"
         }
 
@@ -86,7 +90,7 @@ const Question = ({ question }: QuestionProps) => {
             return "alternative is-selected"
         }
 
-        if (isCorrect !== null && answers[index] !== correctAnswer && answers[index] !== playerAnswer) {
+        if (isCorrect !== null && answers[index] !== correctAnswer && selectedAnswer !== index) {
             return "alternative is-confirmed"
         }
 

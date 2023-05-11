@@ -9,12 +9,12 @@ const scoreSlice = createSlice({
     increment: (state, { payload }) => {
       state.value += payload;
     },
-    reset: (state) => {
+    resetScore: (state) => {
       state.value = 0;
     },
   },
 });
 
-export const { increment, reset } = scoreSlice.actions;
+export const { increment, resetScore } = scoreSlice.actions;
 
 export default scoreSlice.reducer;

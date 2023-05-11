@@ -5,7 +5,6 @@ const questionsSlice = createSlice({
   initialState: {
     questions: [],
     currentQuestion: 0,
-    categoryId: null
   },
   reducers: {
     setQuestions: (state, { payload }) => {
@@ -14,18 +13,15 @@ const questionsSlice = createSlice({
 
     resetQuestions: (state) => {
         state.questions = [];
+        state.currentQuestion = 0;
     },
 
     updateQuestion: (state) => {
         state.currentQuestion += 1;
-    },
-
-    updateCategoryId: (state, { payload }) => {
-      state.categoryId = payload;
     }
   },
 });
 
-export const { setQuestions, resetQuestions, updateQuestion, updateCategoryId } = questionsSlice.actions;
+export const { setQuestions, resetQuestions, updateQuestion } = questionsSlice.actions;
 
 export default questionsSlice.reducer;

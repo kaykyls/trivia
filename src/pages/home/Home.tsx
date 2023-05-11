@@ -1,12 +1,12 @@
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { setQuestions, updateCategoryId } from '../../redux/questionsSlice';
+import { resetQuestions, setQuestions } from '../../redux/questionsSlice';
 import './home.scss'
 import { categories } from '../../utils/categories';
 import ErrorModal from '../../components/errorModal/ErrorModal';
 import Loader from '../../components/loader/Loader';
-import { reset } from '../../redux/scoreSlice';
+import { resetScore } from '../../redux/scoreSlice';
 import { resetAnswer } from '../../redux/answerSlice';
 
 interface Category {
@@ -21,6 +21,12 @@ const Home: React.FC = () => {
     const [type, setType] = useState<string>("multiple")
     const [error, setError] = useState<boolean>(false)
     const [loader, setLoader] = useState<boolean>(false)
+
+    const values = []
+
+    for (let i = 0; i < 50; i ++) {
+        values.push(i + 1)
+    }
 
     const navigate = useNavigate()
 
@@ -43,9 +49,9 @@ const Home: React.FC = () => {
         setValueInput(10)
 
         dispatch(setQuestions([]))
-        dispatch(updateCategoryId(0))
-        dispatch(reset())
+        dispatch(resetScore())
         dispatch(resetAnswer())
+        dispatch(resetQuestions())
     }
 
     const handlePlay = async () => {
@@ -70,7 +76,6 @@ const Home: React.FC = () => {
         }
 
         dispatch(setQuestions(data.results))
-        dispatch(updateCategoryId(categoryId))
         setLoader(false)
 
         navigate('/game')
@@ -100,7 +105,9 @@ const Home: React.FC = () => {
                 </select>
 
                 <label htmlFor="amount">Amount</label>
-                <input onChange={(e) => setValueInput(Number(e.target.value))} type="number" name="amount" id="amount" min="1" max="50" value={valueInput}/>
+                <select  onChange={(e) => setValueInput(Number(e.target.value))} value={valueInput} name="" id="">
+                    {values.map((value: number, index: number) => <option key={index} value={value}>{value}</option>)}
+                </select>
 
                 <button onClick={handlePlay} className='play-btn'>Play</button>
             </form>

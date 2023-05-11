@@ -18,8 +18,8 @@ const Result = () => {
     return (
         <div className='result-container'>
             <div className='result-wrapper'>
-                <h1>Result</h1>
                 <div className='result-info'>
+                    <h1>Result</h1>
                     <span className='result-text'>Your score is: {`${score}/${questions.length * 10}`}</span>
                 </div> 
                 <button className='play-again-btn' onClick={handlePlayAgain}>
