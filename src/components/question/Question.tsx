@@ -1,125 +1,93 @@
 import React, { useEffect, useState, Fragment } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  setCorrectAnswer,
-  setSelectedAnswer,
-  setIsCorrect
-} from '../../redux/answerSlice';
+  setSelectedAnswers,
+} from '../../redux/answersSlice';
 import './question.scss';
 import he from 'he';
 
 interface QuestionProps {
-    question: {
-      category: string;
-      correct_answer: string;
-      difficulty: string;
-      incorrect_answers: string[];
-      question: string;
-      type: string;
-    }
+  question: {
+    category: string;
+    correct_answer: string;
+    difficulty: string;
+    incorrect_answers: string[];
+    question: string;
+    type: string;
+  };
+  answers: string[];
 }
 
-const Question = ({ question }: QuestionProps) => {
-    const {
-        selectedAnswer,
-        isCorrect,
-        correctAnswer
-    } = useSelector((state: any) => state.answer);
+const Question = ({ question, answers }: QuestionProps) => {
+  const dispatch = useDispatch();
+  const [decodedAnswers, setDecodedAnswers] = useState<string[]>([]);
+  const currentQuestion = useSelector((state: any) => state.questions.currentQuestion);
+  const {
+    selectedAnswers,
+    isCorrect,
+    correctAnswers
+  } = useSelector((state: any) => state.answer);
 
-    const [answers, setAnswers] = useState<string[]>([])
-    const [decodedAnswers, setDecodedAnswers] = useState<string[]>([])
-
-    const dispatch = useDispatch()
-
-    const handleSelectAnswer = (index: number) => {
-        if (isCorrect !== null) {
-            return
-        }
-
-        dispatch(setSelectedAnswer(index))
+  const handleSelectAnswer = (index: number) => {
+    if (isCorrect[currentQuestion] !== undefined) {
+      return;
     }
 
-    const shuffle = (array: any[]) => {
-        for (let i = array.length - 1; i > 0; i--) {
-          const j = Math.floor(Math.random() * (i + 1));
-          [array[i], array[j]] = [array[j], array[i]];
-        }
-        return array;
+    dispatch(setSelectedAnswers({ index: currentQuestion, answer: index }));
+  };
+
+  useEffect(() => {
+    const decodedAnswers = answers.map((answer: string) => he.decode(answer));
+    setDecodedAnswers(decodedAnswers);
+  }, [answers]);
+
+  const changeClassName = (index: number) => {
+    if (isCorrect[currentQuestion] === false && selectedAnswers[currentQuestion] === index) {
+      return 'alternative is-wrong';
     }
 
-    useEffect(() => {
-        dispatch(setIsCorrect(null))
-        dispatch(setSelectedAnswer(null))
-        dispatch(setCorrectAnswer(null))
-
-        let checkAnswers = shuffle([question.correct_answer, ...question.incorrect_answers])
-
-        for(let i = 0; i < checkAnswers.length; i++) {
-            if(checkAnswers[i] === question.correct_answer) {
-                dispatch(setCorrectAnswer(i))
-            }
-        }
-
-        setAnswers(checkAnswers)       
-    }, [question])
-
-    useEffect(() => {
-        if (answers.length === 0) {
-          return;
-        }
-
-        const decodedAnswers = answers.map((answer: string) => he.decode(answer));
-        setDecodedAnswers(decodedAnswers);
-      }, [answers]);
-      
-
-    const changleClassName = (index: number) => {
-        if(isCorrect === false && selectedAnswer === index) {
-            return "alternative is-wrong"
-        }
-
-        if(isCorrect && selectedAnswer === index) {
-            return "alternative is-correct"
-        }
-
-        if(isCorrect === false && index === correctAnswer) {
-            return "alternative is-correct"
-        }
-
-        if (selectedAnswer === index) {
-            return "alternative is-selected"
-        }
-
-        if (isCorrect !== null && answers[index] !== correctAnswer && selectedAnswer !== index) {
-            return "alternative is-confirmed"
-        }
-
-        return "alternative"
+    if (isCorrect[currentQuestion] && selectedAnswers[currentQuestion] === index) {
+      return 'alternative is-correct';
     }
 
-    return (
-        <div className='question'>
-            <div className="alternatives">
-                <div onClick={() => handleSelectAnswer(0)} className={changleClassName(0)}>
-                    <span className='alternative-text'>{"A)"} {decodedAnswers[0]}</span>
-                </div>
-                <div onClick={() => handleSelectAnswer(1)} className={changleClassName(1)}>
-                    <span className='alternative-text'>{"B)"} {decodedAnswers[1]}</span>
-                </div>
-                {question.type === "multiple" &&
-                <Fragment>
-                    <div onClick={() => handleSelectAnswer(2)} className={changleClassName(2)}>
-                    <span className='alternative-text'>{"C)"} {decodedAnswers[2]}</span>
-                    </div>
-                    <div onClick={() => handleSelectAnswer(3)} className={changleClassName(3)}>
-                        <span className='alternative-text'>{"D)"} {decodedAnswers[3]}</span>
-                    </div>
-                </Fragment>
-                }
-                
-            </div>
+    if (isCorrect[currentQuestion] === false && index === correctAnswers[currentQuestion]) {
+      return 'alternative is-correct';
+    }
+
+
+    if (selectedAnswers[currentQuestion] === index) {
+      return 'alternative is-selected';
+    }
+
+    if (isCorrect[currentQuestion] !== undefined && answers[index] !== correctAnswers[currentQuestion] && selectedAnswers[currentQuestion] !== index) {
+      return 'alternative is-confirmed';
+    }
+    
+    return 'alternative';
+  };
+
+  return (
+    <div className='question'>
+      <div className="alternatives">
+        <div onClick={() => handleSelectAnswer(0)} className={changeClassName(0)}>
+          <span className='alternative-text'>{"A)"} {decodedAnswers[0]}</span>
         </div>
-    )
-}
+        <div onClick={() => handleSelectAnswer(1)} className={changeClassName(1)}>
+          <span className='alternative-text'>{"B)"} {decodedAnswers[1]}</span>
+        </div>
+        {question.type === "multiple" &&
+          <Fragment>
+            <div onClick={() => handleSelectAnswer(2)} className={changeClassName(2)}>
+              <span className='alternative-text'>{"C)"} {decodedAnswers[2]}</span>
+            </div>
+            <div onClick={() => handleSelectAnswer(3)} className={changeClassName(3)}>
+              <span className='alternative-text'>{"D)"} {decodedAnswers[3]}</span>
+            </div>
+          </Fragment>
+        }
+      </div>
+    </div>
+  );
+};
 
-export default Question
+export default Question;

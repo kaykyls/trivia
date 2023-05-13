@@ -4,47 +4,44 @@ import './game.scss'
 import Question from '../../components/question/Question';
 import { updateQuestion } from '../../redux/questionsSlice';
 import { increment } from '../../redux/scoreSlice';
-import { setIsCorrect } from '../../redux/answerSlice';
+import { setIsCorrect } from '../../redux/answersSlice';
 import { useNavigate } from 'react-router-dom';
 import he from 'he';
 const Game: React.FC = () => {
     const questions = useSelector((state: any) => state.questions.questions)
     const currentQuestion = useSelector((state: any) => state.questions.currentQuestion)
     const score = useSelector((state: any) => state.score.value)
-    const selectedAnswer = useSelector((state: any) => state.answer.selectedAnswer)
+    const selectedAnswers = useSelector((state: any) => state.answer.selectedAnswers)
     const isCorrect = useSelector((state: any) => state.answer.isCorrect)
-    const correctAnswer = useSelector((state: any) => state.answer.correctAnswer)
-    const isPlaying = useSelector((state: any) => state.game.isPlaying)
+    const correctAnswers = useSelector((state: any) => state.answer.correctAnswers)
+    // const isPlaying = useSelector((state: any) => state.game.isPlaying)
+    const answers = useSelector((state: any) => state.answer.answers)
     
     const dispatch = useDispatch()
 
     const navigate = useNavigate()
 
-    // console.log(isPlaying)
-
-    // useEffect(() => {
-    //     if(!isPlaying) {
-    //         navigate('/')
-    //     }
-    // }, [isPlaying, navigate])
-
     const handleUpdateQuestion = () => {    
         if (currentQuestion === questions.length - 1) {
             navigate('/result')
         }
+
         dispatch(updateQuestion(1))
     }
 
     const handleCheckAnswer = () => {
-        if(selectedAnswer === null) {
+        console.log(selectedAnswers[currentQuestion])
+
+        if(selectedAnswers[currentQuestion] === undefined) {
             return
         }
 
-        if(selectedAnswer === correctAnswer) {
-            dispatch(setIsCorrect(true))
+        if(selectedAnswers[currentQuestion] === correctAnswers[currentQuestion]) {
+            dispatch(setIsCorrect({index: currentQuestion, isCorrect: true}))
+
             dispatch(increment(10))
         } else {
-            dispatch(setIsCorrect(false))
+            dispatch(setIsCorrect({index: currentQuestion, isCorrect: false}))
         }
     }
 
@@ -65,10 +62,6 @@ const Game: React.FC = () => {
     return (
         <div className='game-container'>
             <div className='game-wrapper'>
-                <div className="navigation-buttons">
-                    <button onClick={handleNavigateQuestions("left")}><span className="material-symbols-outlined">arrow_back</span></button>
-                    <button onClick={handleNavigateQuestions("right")}><span className="material-symbols-outlined">arrow_forward</span></button>
-                </div>
                 <div className='game-info'>
                     <div className="score">
                         <span className="difficulty-text">Difficulty: {questions[currentQuestion]?.difficulty}</span>
@@ -81,11 +74,14 @@ const Game: React.FC = () => {
                     <span className='question-text'>{questions.length > 0 ? he.decode(questions[currentQuestion]?.question ): null}</span>
                 </div>
 
-                <Question question={questions[currentQuestion]}/>
-
-                <button className={selectedAnswer !== null ? 'next-btn' : "next-btn not-selected"} onClick={isCorrect === null ? handleCheckAnswer : handleUpdateQuestion}>
-                    {isCorrect !== null ? "Next" : "Confirm"}
-                </button>  
+                <Question question={questions[currentQuestion]} answers={answers[currentQuestion]}/>
+                <div className="navigation-buttons">
+                    <button onClick={handleNavigateQuestions("left")}><span className="material-symbols-outlined">arrow_back</span></button>
+                    <button onClick={handleNavigateQuestions("right")}><span className="material-symbols-outlined">arrow_forward</span></button>
+                </div>
+                <button className={selectedAnswers[currentQuestion] !== undefined ? 'next-btn' : "next-btn not-selected"} onClick={isCorrect[currentQuestion] === undefined ? handleCheckAnswer : handleUpdateQuestion}>
+                    {isCorrect[currentQuestion] !== undefined ? "Next" : "Confirm"}
+                </button>
             </div>
         </div>
     )

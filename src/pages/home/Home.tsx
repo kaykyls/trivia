@@ -7,7 +7,11 @@ import { categories } from '../../utils/categories';
 import ErrorModal from '../../components/errorModal/ErrorModal';
 import Loader from '../../components/loader/Loader';
 import { resetScore } from '../../redux/scoreSlice';
-import { resetAnswer } from '../../redux/answerSlice';
+import { resetAnswer } from '../../redux/answersSlice';
+import { setAnswers } from '../../redux/answersSlice';
+import { setCorrectAnswers } from '../../redux/answersSlice';
+import { useSelector } from 'react-redux';
+
 
 interface Category {
   id: number;
@@ -21,6 +25,8 @@ const Home: React.FC = () => {
     const [type, setType] = useState<string>("multiple")
     const [error, setError] = useState<boolean>(false)
     const [loader, setLoader] = useState<boolean>(false)
+
+    const correctAnswers = useSelector((state: any) => state.answer.correctAnswers)
 
     const values = []
 
@@ -54,6 +60,14 @@ const Home: React.FC = () => {
         dispatch(resetQuestions())
     }
 
+    const shuffle = (array: any[]) => {
+        for (let i = array.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [array[i], array[j]] = [array[j], array[i]];
+        }
+        return array;
+    }
+
     const handlePlay = async () => {
         resetGame()
 
@@ -76,10 +90,29 @@ const Home: React.FC = () => {
         }
 
         dispatch(setQuestions(data.results))
+
+        let checkAnswers: any[] = []
+        data.results.forEach((question: any) => {
+            checkAnswers = [...checkAnswers, shuffle([...question.incorrect_answers, question.correct_answer])]
+        })
+
+        for(let i = 0; i < checkAnswers.length; i++) {
+            for(let j = 0; j < checkAnswers[i].length; j++) {
+                if(checkAnswers[i][j] === data.results[i].correct_answer) {
+                    dispatch(setCorrectAnswers({index: i, correctAnswer: j}))
+                }
+            }
+        }
+
+        dispatch(setAnswers([...checkAnswers]))
         setLoader(false)
+
 
         navigate('/game')
     }
+
+    console.log(correctAnswers)
+
 
   return (
     <div className="menu-container">

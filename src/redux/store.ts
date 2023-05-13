@@ -1,7 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit'
 import scoreReducer from './scoreSlice'
 import questionsReducer from './questionsSlice'
-import answerReducer from './answerSlice'
+import answerReducer from './answersSlice'
 import gameReducer from './gameSlice'
 
 const store = configureStore({
