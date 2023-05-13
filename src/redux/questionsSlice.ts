@@ -16,8 +16,8 @@ const questionsSlice = createSlice({
         state.currentQuestion = 0;
     },
 
-    updateQuestion: (state) => {
-        state.currentQuestion += 1;
+    updateQuestion: (state, { payload }) => {
+        state.currentQuestion += payload;
     }
   },
 });

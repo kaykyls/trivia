@@ -12,6 +12,22 @@
         width: 500px;
         min-height: 600px;
         justify-content: space-between;
+
+        .navigation-buttons {
+            display: flex;
+            justify-content: space-between;
+
+            button {
+                background: none;
+                border: none;
+                cursor: pointer;
+                transition: .1s;
+
+                &:hover {
+                    transform: scale(1.3)
+                }
+            }
+        }
     }
 }
 

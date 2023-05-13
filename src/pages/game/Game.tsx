@@ -7,7 +7,6 @@ import { increment } from '../../redux/scoreSlice';
 import { setIsCorrect } from '../../redux/answerSlice';
 import { useNavigate } from 'react-router-dom';
 import he from 'he';
-
 const Game: React.FC = () => {
     const questions = useSelector((state: any) => state.questions.questions)
     const currentQuestion = useSelector((state: any) => state.questions.currentQuestion)
@@ -29,12 +28,11 @@ const Game: React.FC = () => {
     //     }
     // }, [isPlaying, navigate])
 
-
     const handleUpdateQuestion = () => {    
         if (currentQuestion === questions.length - 1) {
             navigate('/result')
         }
-        dispatch(updateQuestion())
+        dispatch(updateQuestion(1))
     }
 
     const handleCheckAnswer = () => {
@@ -50,9 +48,27 @@ const Game: React.FC = () => {
         }
     }
 
+    const handleNavigateQuestions = (direction: string) => () => {
+        if(direction === "left") {
+            if(currentQuestion === 0) {
+                return
+            }
+            dispatch(updateQuestion(-1))
+        } else {
+            if(currentQuestion === questions.length - 1) {
+                return
+            }
+            dispatch(updateQuestion(1))
+        }
+    }
+
     return (
         <div className='game-container'>
             <div className='game-wrapper'>
+                <div className="navigation-buttons">
+                    <button onClick={handleNavigateQuestions("left")}><span className="material-symbols-outlined">arrow_back</span></button>
+                    <button onClick={handleNavigateQuestions("right")}><span className="material-symbols-outlined">arrow_forward</span></button>
+                </div>
                 <div className='game-info'>
                     <div className="score">
                         <span className="difficulty-text">Difficulty: {questions[currentQuestion]?.difficulty}</span>
