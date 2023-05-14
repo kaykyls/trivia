@@ -63,10 +63,15 @@ const Game: React.FC = () => {
         <div className='game-container'>
             <div className='game-wrapper'>
                 <div className='game-info'>
+                    <div className="navigation-buttons">
+                        <button onClick={handleNavigateQuestions("left")}><span className="material-symbols-outlined">arrow_back</span></button>
+                        <button onClick={handleNavigateQuestions("right")}><span className="material-symbols-outlined">arrow_forward</span></button>
+                    </div>
                     <div className="score">
                         <span className="difficulty-text">Difficulty: {questions[currentQuestion]?.difficulty}</span>
                         <span className='score-text'>Score: {score}</span>
                     </div>
+                    
                     <div className='quiz-info'>
                         <h1>{questions[currentQuestion]?.category}</h1>
                         <span className='question-number'>{currentQuestion + 1}/{questions.length}</span>
@@ -75,10 +80,7 @@ const Game: React.FC = () => {
                 </div>
 
                 <Question question={questions[currentQuestion]} answers={answers[currentQuestion]}/>
-                <div className="navigation-buttons">
-                    <button onClick={handleNavigateQuestions("left")}><span className="material-symbols-outlined">arrow_back</span></button>
-                    <button onClick={handleNavigateQuestions("right")}><span className="material-symbols-outlined">arrow_forward</span></button>
-                </div>
+                
                 <button className={selectedAnswers[currentQuestion] !== undefined ? 'next-btn' : "next-btn not-selected"} onClick={isCorrect[currentQuestion] === undefined ? handleCheckAnswer : handleUpdateQuestion}>
                     {isCorrect[currentQuestion] !== undefined ? "Next" : "Confirm"}
                 </button>
