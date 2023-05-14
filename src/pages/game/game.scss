@@ -13,6 +13,30 @@
         min-height: 600px;
         justify-content: space-between;
 
+        .game-info {
+            display: flex;
+            flex-direction: column;
+            gap: .5rem;
+
+            .score {
+                display: flex;
+                justify-content: space-between;
+            }
+
+            .quiz-info {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                h1 {
+                    font-size: 1.5rem;
+                }
+            }
+
+            .question-text {
+                font-size: 1.2rem;
+            }            
+        }
+
         .navigation-buttons {
             display: flex;
             justify-content: space-between;
@@ -28,49 +52,29 @@
                 }
             }
         }
+
+        .next-btn {
+            @include mixins.button();
+            align-self: flex-end;
+            padding: .5rem 1rem;
+            font-size: 1.2rem;
+            border-radius: 1rem;
+            outline: 2px solid #000;
+            border: none;
+        }
+
+        .not-selected {
+            background: rgba(255, 255, 255, 0.356);
+            color: #777777;
+            padding: 0.5rem 1rem;
+            border-radius: 1rem;
+            border: none;
+            cursor: default;
+            outline: none;
+        
+            &:hover {
+                background: #ffffff70;
+            }
+        }
     }
-}
-
-.next-btn {
-    @include mixins.button();
-    align-self: flex-end;
-    padding: .5rem 1rem;
-    font-size: 1.2rem;
-    border-radius: 1rem;
-    outline: 2px solid #000;
-    border: none;
-}
-
-.quiz-info {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    h1 {
-        font-size: 1.5rem;
-    }
-}
-
-.game-info {
-    display: flex;
-    flex-direction: column;
-    gap: .5rem;
-}
-
-.not-selected {
-    background: rgba(255, 255, 255, 0.356);
-    color: #777777;
-    padding: 0.5rem 1rem;
-    border-radius: 1rem;
-    border: none;
-    cursor: default;
-    outline: none;
-
-    &:hover {
-        background: #ffffff70;
-    }
-}
-
-.score {
-    display: flex;
-    justify-content: space-between;
 }

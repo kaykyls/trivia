@@ -31,3 +31,11 @@
         }
     }  
 }
+
+@media (max-width: 768px) {
+    .menu-container {
+        .menu-wrapper {
+            padding: 2rem;
+        }
+    }
+}
