@@ -1,4 +1,4 @@
-# No começo do desenvolvimento ainda 👍
+# ta quase pronto 👍
 
 # Getting Started with Create React App
 
