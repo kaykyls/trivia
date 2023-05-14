@@ -67,10 +67,10 @@ const Game: React.FC = () => {
                         <button onClick={handleNavigateQuestions("left")}><span className="material-symbols-outlined">arrow_back</span></button>
                         <button onClick={handleNavigateQuestions("right")}><span className="material-symbols-outlined">arrow_forward</span></button>
                     </div>
-                    <div className="score">
+                    {/* <div className="score">
                         <span className="difficulty-text">Difficulty: {questions[currentQuestion]?.difficulty}</span>
                         <span className='score-text'>Score: {score}</span>
-                    </div>
+                    </div> */}
                     
                     <div className='quiz-info'>
                         <h1>{questions[currentQuestion]?.category}</h1>
