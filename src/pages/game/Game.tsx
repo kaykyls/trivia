@@ -14,11 +14,9 @@ const Game: React.FC = () => {
     const selectedAnswers = useSelector((state: any) => state.answer.selectedAnswers)
     const isCorrect = useSelector((state: any) => state.answer.isCorrect)
     const correctAnswers = useSelector((state: any) => state.answer.correctAnswers)
-    // const isPlaying = useSelector((state: any) => state.game.isPlaying)
     const answers = useSelector((state: any) => state.answer.answers)
     
     const dispatch = useDispatch()
-
     const navigate = useNavigate()
 
     const handleUpdateQuestion = () => {    
@@ -38,7 +36,6 @@ const Game: React.FC = () => {
 
         if(selectedAnswers[currentQuestion] === correctAnswers[currentQuestion]) {
             dispatch(setIsCorrect({index: currentQuestion, isCorrect: true}))
-
             dispatch(increment(10))
         } else {
             dispatch(setIsCorrect({index: currentQuestion, isCorrect: false}))
@@ -66,12 +63,7 @@ const Game: React.FC = () => {
                     <div className="navigation-buttons">
                         <button onClick={handleNavigateQuestions("left")}><span className="material-symbols-outlined">arrow_back</span></button>
                         <button onClick={handleNavigateQuestions("right")}><span className="material-symbols-outlined">arrow_forward</span></button>
-                    </div>
-                    {/* <div className="score">
-                        <span className="difficulty-text">Difficulty: {questions[currentQuestion]?.difficulty}</span>
-                        <span className='score-text'>Score: {score}</span>
-                    </div> */}
-                    
+                    </div> 
                     <div className='quiz-info'>
                         <h1>{questions[currentQuestion]?.category}</h1>
                         <span className='question-number'>{currentQuestion + 1}/{questions.length}</span>
@@ -82,7 +74,9 @@ const Game: React.FC = () => {
                 <Question question={questions[currentQuestion]} answers={answers[currentQuestion]}/>
                 
                 <button className={selectedAnswers[currentQuestion] !== undefined ? 'next-btn' : "next-btn not-selected"} onClick={isCorrect[currentQuestion] === undefined ? handleCheckAnswer : handleUpdateQuestion}>
-                    {isCorrect[currentQuestion] !== undefined ? "Next" : "Confirm"}
+                    {isCorrect[currentQuestion] !== undefined && currentQuestion === questions.length - 1 ? "Finish" : null}
+                    {isCorrect[currentQuestion] !== undefined && currentQuestion !== questions.length - 1 ? "Next" : null}
+                    {isCorrect[currentQuestion] === undefined ? "Confirm" : null}
                 </button>
             </div>
         </div>

@@ -11,6 +11,7 @@ import { resetAnswer } from '../../redux/answersSlice';
 import { setAnswers } from '../../redux/answersSlice';
 import { setCorrectAnswers } from '../../redux/answersSlice';
 import { useSelector } from 'react-redux';
+import { setIsPlaying } from '../../redux/gameSlice';
 
 
 interface Category {
@@ -105,6 +106,7 @@ const Home: React.FC = () => {
         }
 
         dispatch(setAnswers([...checkAnswers]))
+        dispatch(setIsPlaying(true))
         setLoader(false)
 
 
