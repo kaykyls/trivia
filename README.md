@@ -1,6 +1,6 @@
 <div>
-<h1>Quiz</h1>
-<p>This is a Quiz Game made with React, Reudx Toolkit and Sass using the OpenTDB API.</p>
+<h1>Trivia</h1>
+<p>This is a Trivia Game made with React, Reudx Toolkit and Sass using the OpenTDB API.</p>
 
 <p>
   <a href="#preview">Preview</a> •
@@ -14,7 +14,7 @@
 ---
 
 # Preview
-<a href="https://chat-app-kaykyls.vercel.app/"><img height="400px" width="400px" src="https://cdn.discordapp.com/attachments/766798638139179031/1117212542415163572/quiz.gif"/></a>
+<a href="https://trivia-kaykyls.vercel.app/"><img height="400px" width="400px" src="https://cdn.discordapp.com/attachments/766798638139179031/1117212542415163572/quiz.gif"/></a>
 
 # Features
 - [x] Choose category and amount
@@ -30,7 +30,7 @@ Make sure you have installed all of the following prerequisites:
 # Running The Application
 ```bash
 # Clone the repository
-git clone https://github.com/kaykyls/quiz.git
+git clone https://github.com/kaykyls/trivia.git
 
 # Select the project directory
 cd quiz
