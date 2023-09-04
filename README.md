@@ -33,7 +33,7 @@ Make sure you have installed all of the following prerequisites:
 git clone https://github.com/kaykyls/trivia.git
 
 # Select the project directory
-cd quiz
+cd trivia
 
 # Install the dependencies
 npm install
