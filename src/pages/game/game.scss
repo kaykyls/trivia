@@ -47,6 +47,11 @@
                 cursor: pointer;
                 transition: .1s;
 
+                .arrow {
+                    width: 1.5rem;
+                    height: 1.5rem;
+                }
+
                 &:hover {
                     transform: scale(1.3)
                 }
@@ -76,5 +81,11 @@
                 background: #ffffff70;
             }
         }
+    }
+}
+
+@media (max-width: 768px) {
+    .game-wrapper {
+        margin: 0 1rem;
     }
 }
